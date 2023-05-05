@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
+import requests
 
 st.write("""
 ### Uber pickups in NYC
@@ -42,3 +43,20 @@ hour_to_filter = st.slider('hour', 0, 23, 17)  # min: 0h, max: 23h, default: 17h
 filtered_data = data[data[DATE_COLUMN].dt.hour == hour_to_filter]
 st.subheader(f'Map of all pickups at {hour_to_filter}:00')
 st.map(filtered_data)
+
+
+
+
+
+
+
+# Fetch the stock prices
+df = pd.read_csv("https://raw.githubusercontent.com/datasets/bse-sensex/main/data/data.csv")
+
+# Create a select box to select a company
+st.sidebar.title("Select a company")
+company = st.sidebar.selectbox("", df["Name"])
+
+# Show the selected company's data
+st.title("Stock Price for " + company)
+st.line_chart(df[df["Name"] == company][["Open", "Close"]])
